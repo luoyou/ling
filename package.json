@@ -28,9 +28,75 @@
     ],
     "keybindings": [
       {
-        "command": "ling.helloWorld",
-        "key": "ctrl+alt+.",
-        "mac": "cmd+alt+.",
+        "command": "ling.endSemicolon",
+        "key": "alt+;",
+        "mac": "alt+;",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "ling.preEndSemicolon",
+        "key": "alt+ctrl+;",
+        "mac": "alt+cmd+;",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "ling.endComma",
+        "key": "alt+,",
+        "mac": "alt+,",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "ling.preEndComma",
+        "key": "alt+ctrl+,",
+        "mac": "alt+ctrl+,",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "ling.endColon",
+        "key": "alt+shift+;",
+        "mac": "alt+shift+;",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "ling.endEqual",
+        "key": "alt+=",
+        "mac": "alt+=",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "ling.endArrow",
+        "key": "alt+.",
+        "mac": "alt+.",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "ling.endDoubleArrow",
+        "key": "alt+shift+.",
+        "mac": "alt+shift+.",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "ling.endBraces",
+        "key": "alt+shift+[",
+        "mac": "alt+shift+[",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "ling.endSquareBraces",
+        "key": "alt+[",
+        "mac": "alt+[",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "ling.endParentheses",
+        "key": "alt+shift+9",
+        "mac": "alt+shift+9",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "ling.completeParentHeses",
+        "key": "alt+shift+0",
+        "mac": "alt+shift+0",
         "when": "editorTextFocus"
       }
     ]

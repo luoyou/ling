@@ -1,9 +1,8 @@
-# Change Log
+# 更新记录
 
-All notable changes to the "ling" extension will be documented in this file.
+## 2022-12-11
+- 新增快捷键自动至行尾并添加`;`，`,`等符号
+- 新增`alt+shift+0`快捷键，行尾自动补全`)`
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+## 2022-12-10
+- 首次发布插件，支持php语言中，字符串字面量`ctrl+click`跳转至对应的代码文件

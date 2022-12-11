@@ -21,15 +21,64 @@ export function activate(context: vscode.ExtensionContext) {
 	let stringClass = vscode.languages.registerDefinitionProvider(['php'], {provideDefinition})
 	context.subscriptions.push(stringClass)
 
-	// let endSemicolon = vscode.commands.registerTextEditorCommand('ling.end', {
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.endSemicolon',    shortcutRule(';', false)))
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.preEndSemicolon', shortcutRule(';', true)))
 
-	// })
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.endComma',    shortcutRule(',', false)))
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.preEndComma', shortcutRule(',', true)))
 
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.endColon', shortcutRule(':', false)))
+
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.endEqual', shortcutRule(' = ', false)))
+
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.endArrow', shortcutRule('->', false)))
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.endDoubleArrow', shortcutRule('=>', false)))
+
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.endBraces', shortcutRule('{', false)))
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.endSquareBraces', shortcutRule('[', false)))
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.endParentheses', shortcutRule('(', false)))
+	
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.completeParentHeses', 
+		(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) => {
+			let line = textEditor.document.lineAt(textEditor.selection.end.line)
+			let leftNum = line.text.split('(').length - 1;
+			if(leftNum > 0){
+				let rightNum = line.text.split(')').length - 1;
+				if(rightNum < leftNum){
+					vscode.commands.executeCommand('cursorLineEnd')
+					if(line.text.endsWith(';')){
+						vscode.commands.executeCommand('cursorLeft')
+					}
+					vscode.commands.executeCommand('type', {text:')'})
+				}
+			}
+		})
+	)
 }
 
 // This method is called when your extension is deactivated
 export function deactivate() {}
 
+
+function shortcutRule(symbol: string, ctrl = false){
+	return (textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) => {
+		let line = textEditor.document.lineAt(textEditor.selection.end.line)
+		vscode.commands.executeCommand('cursorLineEnd')
+		let text = line.text
+		if(symbol != ';'){
+			while(text.endsWith(';')){
+				vscode.commands.executeCommand('cursorLeft')
+				text = text.slice(0, -1)
+			}
+		}
+		if(!text.endsWith(symbol)){
+			vscode.commands.executeCommand('type', {text: symbol})
+		}
+		if(ctrl){
+			vscode.commands.executeCommand('cursorLeft', symbol.length);
+		}
+	}
+}
 
 /**
  * 查找文件定义的provider，匹配到了就return一个location，否则不做处理
@@ -43,16 +92,16 @@ function provideDefinition(
 	position: vscode.Position, 
 	token: vscode.CancellationToken): vscode.ProviderResult<vscode.Definition | vscode.DefinitionLink[]>{
 
+	const regex = /('(\\?(\w+\\\w+)+)')|(\"(\\?(\w+\\\w+)+)\")/
 	const fileName	= document.fileName;
-	const namespace = document.getText(document.getWordRangeAtPosition(position, /('(\\?(\w+\\\w+)+)')|(\"(\\?(\w+\\\w+)+)\")/));
 	const line		= document.lineAt(position);
-
-	if (fileName.endsWith('.php') && /('(\\?(\w+\\\w+)+)')|(\"(\\?(\w+\\\w+)+)\")/.test(line.text)) {
+	
+	if (fileName.endsWith('.php') && regex.test(line.text)) {
+		const namespace = document.getText(document.getWordRangeAtPosition(position, regex));
 		let projectPath = getProjectPath(document)
 		let destPath = projectPath + '/' + namespace.replaceAll('\\', '/').replaceAll('"', '').replaceAll("'", '')+'.php'
 		const fs = require('fs');
 		if (fs.existsSync(destPath)) {
-			// new vscode.Position(0, 0) 表示跳转到某个文件的第一行第一列
 			return new vscode.Location(vscode.Uri.file(destPath), new vscode.Position(0, 0))
 		}
 	}
