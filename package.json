@@ -16,6 +16,18 @@
   },
   "activationEvents": [
     "onCommand:ling.helloWorld",
+    "onCommand:ling.endSemicolon",
+    "onCommand:ling.preEndSemicolon",
+    "onCommand:ling.endComma",
+    "onCommand:ling.preEndComma",
+    "onCommand:ling.endColon",
+    "onCommand:ling.endEqual",
+    "onCommand:ling.endArrow",
+    "onCommand:ling.endDoubleArrow",
+    "onCommand:ling.endBraces",
+    "onCommand:ling.endSquareBraces",
+    "onCommand:ling.endParentheses",
+    "onCommand:ling.completeParentHeses",
     "onLanguage:php"
   ],
   "main": "./out/extension.js",
