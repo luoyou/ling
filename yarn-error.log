@@ -1,0 +1,79 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/bin/yarn install
+
+PATH: 
+  /home/luo/.local/bin:/home/luo/.local/share/pnpm:/home/luo/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Python310/Scripts/:/mnt/c/Python310/:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA NvDLISR:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files/nodejs/:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/Go/bin:/mnt/z/app/mingw64/bin:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/z/app/swoole-cli-v5.0.1-cygwin64/bin:/mnt/c/Users/luo/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/luo/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/luo/AppData/Roaming/npm:/mnt/c/Users/luo/go/bin:/snap/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  18.7.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: EEXIST: file already exists, mkdir '/home/luo/ling/node_modules/mocha/node_modules/glob/node_modules'
+
+npm manifest: 
+  {
+    "name": "ling",
+    "displayName": "ling",
+    "description": "迅捷",
+    "version": "0.0.1",
+    "engines": {
+      "vscode": "^1.74.0"
+    },
+    "categories": [
+      "Other"
+    ],
+    "activationEvents": [
+      "onCommand:ling.helloWorld",
+      "onLanguage:php"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+      "commands": [
+        {
+          "command": "ling.helloWorld",
+          "title": "Hello World"
+        }
+      ],
+      "keybindings": [
+        {
+          "command": "ling.helloWorld",
+          "key": "ctrl+alt+.",
+          "mac": "cmd+alt+.",
+          "when": "editorTextFocus"
+        }
+      ]
+    },
+    "scripts": {
+      "vscode:prepublish": "pnpm run compile",
+      "compile": "tsc -p ./",
+      "watch": "tsc -watch -p ./",
+      "pretest": "pnpm run compile && pnpm run lint",
+      "lint": "eslint src --ext ts",
+      "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+      "@types/vscode": "^1.74.0",
+      "@types/glob": "^8.0.0",
+      "@types/mocha": "^10.0.1",
+      "@types/node": "16.x",
+      "@typescript-eslint/eslint-plugin": "^5.45.0",
+      "@typescript-eslint/parser": "^5.45.0",
+      "eslint": "^8.28.0",
+      "glob": "^8.0.3",
+      "mocha": "^10.1.0",
+      "typescript": "^4.9.3",
+      "@vscode/test-electron": "^2.2.0"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
