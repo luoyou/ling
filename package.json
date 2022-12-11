@@ -36,7 +36,55 @@
       {
         "command": "ling.helloWorld",
         "title": "Hello World"
-      }
+      },
+      {
+        "command": "ling.endSemicolon",
+        "title": "endSemicolon"
+      },
+      {
+        "command": "ling.preEndSemicolon",
+        "title": "preEndSemicolon"
+      },
+      {
+        "command": "ling.endComma",
+        "title": "endComma"
+      },
+      {
+        "command": "ling.preEndComma",
+        "title": "preEndComma"
+      },
+      {
+        "command": "ling.endColon",
+        "title": "endColon"
+      },
+      {
+        "command": "ling.endEqual",
+        "title": "endEqual"
+      },
+      {
+        "command": "ling.endArrow",
+        "title": "endArrow"
+      },
+      {
+        "command": "ling.endDoubleArrow",
+        "title": "endDoubleArrow"
+      },
+      {
+        "command": "ling.endBraces",
+        "title": "endBraces"
+      },
+      {
+        "command": "ling.endSquareBraces",
+        "title": "endSquareBraces"
+      },
+      {
+        "command": "ling.endParentheses",
+        "title": "endParentheses"
+      },
+      {
+        "command": "ling.completeParentHeses",
+        "title": "completeParentHeses"
+      },
     ],
     "keybindings": [
       {
