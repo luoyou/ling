@@ -39,52 +39,52 @@
       },
       {
         "command": "ling.endSemicolon",
-        "title": "endSemicolon"
+        "title": "行尾分号"
       },
       {
         "command": "ling.preEndSemicolon",
-        "title": "preEndSemicolon"
+        "title": "行尾分号光标前移"
       },
       {
         "command": "ling.endComma",
-        "title": "endComma"
+        "title": "行尾逗号"
       },
       {
         "command": "ling.preEndComma",
-        "title": "preEndComma"
+        "title": "行尾逗号光标前移"
       },
       {
         "command": "ling.endColon",
-        "title": "endColon"
+        "title": "行尾冒号"
       },
       {
         "command": "ling.endEqual",
-        "title": "endEqual"
+        "title": "行尾等号"
       },
       {
         "command": "ling.endArrow",
-        "title": "endArrow"
+        "title": "行尾->"
       },
       {
         "command": "ling.endDoubleArrow",
-        "title": "endDoubleArrow"
+        "title": "行尾=>"
       },
       {
         "command": "ling.endBraces",
-        "title": "endBraces"
+        "title": "行尾{}"
       },
       {
         "command": "ling.endSquareBraces",
-        "title": "endSquareBraces"
+        "title": "行尾[]"
       },
       {
         "command": "ling.endParentheses",
-        "title": "endParentheses"
+        "title": "行尾()"
       },
       {
         "command": "ling.completeParentHeses",
-        "title": "completeParentHeses"
-      },
+        "title": "行尾补全()"
+      }
     ],
     "keybindings": [
       {
