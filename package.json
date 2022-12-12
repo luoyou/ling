@@ -3,7 +3,7 @@
   "displayName": "ling",
   "description": "迅捷",
   "publisher": "luo-rori",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "engines": {
     "vscode": "*"
   },
