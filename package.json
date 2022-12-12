@@ -1,11 +1,18 @@
 {
   "name": "ling",
-  "displayName": "ling",
-  "description": "迅捷",
+  "displayName": "令",
+  "description": "迅速，敏捷",
+  "keywords": [
+    "ling",
+    "php",
+    "令",
+    "快捷键"
+  ],
   "publisher": "luo-rori",
-  "version": "0.0.8",
+  "icon": "assets/images/icon.jpg",
+  "version": "0.0.16",
   "engines": {
-    "vscode": "^1.74.0"
+    "vscode": "^1.0.0"
   },
   "categories": [
     "Other"
@@ -56,6 +63,10 @@
       {
         "command": "ling.endColon",
         "title": "行尾冒号"
+      },
+      {
+        "command": "ling.endQuestionMark",
+        "title": "行尾问号"
       },
       {
         "command": "ling.endEqual",
@@ -118,6 +129,12 @@
         "when": "editorTextFocus"
       },
       {
+        "command": "ling.endQuestionMark",
+        "key": "alt+shift+/",
+        "mac": "alt+shift+/",
+        "when": "editorTextFocus"
+      },
+      {
         "command": "ling.endEqual",
         "key": "alt+=",
         "mac": "alt+=",
@@ -158,6 +175,12 @@
         "key": "alt+shift+0",
         "mac": "alt+shift+0",
         "when": "editorTextFocus"
+      },
+      {
+        "command": "workbench.files.action.showActiveFileInExplorer",
+        "key": "alt+q alt+e",
+        "mac": "alt+q alt+e",
+        "when": "editorTextFocus"
       }
     ]
   },
@@ -170,7 +193,7 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.74.0",
+    "@types/vscode": "^1.0.0",
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
