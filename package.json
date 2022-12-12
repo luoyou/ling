@@ -1,8 +1,9 @@
 {
   "name": "ling",
-  "displayName": "ling",
-  "description": "迅捷",
+  "displayName": "令",
+  "description": "迅速，敏捷",
   "publisher": "luo-rori",
+  "icon": "assets/images/icon.jpg",
   "version": "0.0.13",
   "engines": {
     "vscode": "^1.0.0"
