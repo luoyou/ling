@@ -169,6 +169,12 @@
         "key": "alt+shift+0",
         "mac": "alt+shift+0",
         "when": "editorTextFocus"
+      },
+      {
+        "command": "workbench.files.action.showActiveFileInExplorer",
+        "key": "alt+q alt+e",
+        "mac": "alt+q alt+e",
+        "when": "editorTextFocus"
       }
     ]
   },
