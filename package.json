@@ -2,6 +2,7 @@
   "name": "ling",
   "displayName": "令",
   "description": "迅速，敏捷",
+  "keywords": ["ling", "php", "令", "快捷键"],
   "publisher": "luo-rori",
   "icon": "assets/images/icon.jpg",
   "version": "0.0.15",
