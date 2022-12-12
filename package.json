@@ -58,6 +58,10 @@
         "title": "行尾冒号"
       },
       {
+        "command": "ling.endQuestionMark",
+        "title": "行尾问号"
+      },
+      {
         "command": "ling.endEqual",
         "title": "行尾等号"
       },
@@ -115,6 +119,12 @@
         "command": "ling.endColon",
         "key": "alt+shift+;",
         "mac": "alt+shift+;",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "ling.endQuestionMark",
+        "key": "alt+shift+/",
+        "mac": "alt+shift+/",
         "when": "editorTextFocus"
       },
       {
