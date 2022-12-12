@@ -95,6 +95,10 @@
       {
         "command": "ling.completeParentHeses",
         "title": "行尾补全()"
+      },
+      {
+        "command": "ling.gitFlow",
+        "title": "综合git add . -> git commit -m'' -> git push 三个流程"
       }
     ],
     "keybindings": [
@@ -181,6 +185,16 @@
         "key": "alt+q alt+e",
         "mac": "alt+q alt+e",
         "when": "editorTextFocus"
+      },
+      {
+        "command": "git.pull",
+        "key": "alt+g alt+p",
+        "mac": "alt+g alt+p"
+      },
+      {
+        "command": "ling.gitFlow",
+        "key": "alt+g alt+c",
+        "mac": "alt+g alt+c"
       }
     ]
   },

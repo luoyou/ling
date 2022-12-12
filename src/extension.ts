@@ -55,6 +55,23 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		})
 	)
+
+	context.subscriptions.push(vscode.commands.registerCommand('ling.gitFlow', ()=>{
+		// vscode.commands.executeCommand('git.stageAll')
+		vscode.window.showQuickPick([
+			{
+				label: '是1'
+			}, 
+			{
+				label: '否2'
+			}
+		], {
+			ignoreFocusOut: true,
+			placeHolder: '请输入提交信息，或者选择下方自动生成的提交信息',
+		}).then((msg) => {
+			console.log(msg)
+		})
+	}))
 }
 
 // This method is called when your extension is deactivated
@@ -108,13 +125,13 @@ function provideDefinition(
 	}
 }
 
-    /**
-     * 获取当前所在工程根目录，有3种使用方法：<br>
-     * getProjectPath(uri) uri 表示工程内某个文件的路径<br>
-     * getProjectPath(document) document 表示当前被打开的文件document对象<br>
-     * getProjectPath() 会自动从 activeTextEditor 拿document对象，如果没有拿到则报错
-     * @param {*} document 
-     */
+/**
+ * 获取当前所在工程根目录，有3种使用方法：<br>
+ * getProjectPath(uri) uri 表示工程内某个文件的路径<br>
+ * getProjectPath(document) document 表示当前被打开的文件document对象<br>
+ * getProjectPath() 会自动从 activeTextEditor 拿document对象，如果没有拿到则报错
+ * @param {*} document 
+ */
 function getProjectPath(document: vscode.TextDocument):string {
 	let projectPath = ''
 	if(vscode.workspace.workspaceFolders === undefined) {
