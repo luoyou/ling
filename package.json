@@ -5,7 +5,7 @@
   "publisher": "luo-rori",
   "version": "0.0.10",
   "engines": {
-    "vscode": "^1.0.0"
+    "vscode": "^1.70.0"
   },
   "categories": [
     "Other"
