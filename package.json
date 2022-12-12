@@ -4,7 +4,7 @@
   "description": "迅速，敏捷",
   "publisher": "luo-rori",
   "icon": "assets/images/icon.jpg",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "engines": {
     "vscode": "^1.0.0"
   },
