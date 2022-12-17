@@ -56,6 +56,13 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	)
 
+	// context.subscriptions.push(vscode.languages.registerCompletionItemProvider('php', {
+	// 	provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken, context: vscode.CompletionContext): ProviderResult<T[] | CompletionList<T>> {
+	// 		let file_name = document.fileName;
+
+	// 	},
+	// }, '<?'));
+
 	context.subscriptions.push(vscode.commands.registerCommand('ling.gitFlow', ()=>{
 		// vscode.commands.executeCommand('git.stageAll')
 		vscode.window.showQuickPick([
