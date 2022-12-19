@@ -29,4 +29,4 @@
 在php文件中，若字符串字面量为`'app\controller\UserController'`形式，则会依据该目录路径寻找此文件，若文件存在，支持`ctrl+click`跳转至对应的文件。
 
 目前仅仅依据命名空间路径进行查找，尚未支持查询composer文件中的自动加载规则进行查找
-后期计划依据https://www.npmjs.com/package/php-parser库进行查找
+后期计划依据 https://www.npmjs.com/package/php-parser 库进行查找
