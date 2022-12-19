@@ -10,7 +10,7 @@
   ],
   "publisher": "luo-rori",
   "icon": "assets/images/icon.jpg",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "engines": {
     "vscode": "^1.0.0"
   },
@@ -22,7 +22,6 @@
     "url": "https://github.com/luoyou/ling"
   },
   "activationEvents": [
-    "onCommand:ling.helloWorld",
     "onCommand:ling.endSemicolon",
     "onCommand:ling.preEndSemicolon",
     "onCommand:ling.endComma",
@@ -40,10 +39,6 @@
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
-      {
-        "command": "ling.helloWorld",
-        "title": "Hello World"
-      },
       {
         "command": "ling.endSemicolon",
         "title": "行尾分号"

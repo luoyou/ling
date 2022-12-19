@@ -6,17 +6,6 @@ import * as vscode from 'vscode';
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('ling.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from ling!');
-	});
-
-	context.subscriptions.push(disposable);
-
 	/** 按住ctrl 识别php中的string类的字符串支持跳转 */
 	let stringClass = vscode.languages.registerDefinitionProvider(['php'], {provideDefinition})
 	context.subscriptions.push(stringClass)
@@ -56,6 +45,13 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	)
 
+	// context.subscriptions.push(vscode.languages.registerCompletionItemProvider('php', {
+	// 	provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken, context: vscode.CompletionContext): ProviderResult<T[] | CompletionList<T>> {
+	// 		let file_name = document.fileName;
+
+	// 	},
+	// }, '<?'));
+
 	context.subscriptions.push(vscode.commands.registerCommand('ling.gitFlow', ()=>{
 		// vscode.commands.executeCommand('git.stageAll')
 		vscode.window.showQuickPick([
@@ -77,9 +73,20 @@ export function activate(context: vscode.ExtensionContext) {
 // This method is called when your extension is deactivated
 export function deactivate() {}
 
-
+const symbol_map:any = {
+	'->': {
+		php: '->',
+		typescript:  '.',
+		javascript:  '.',
+		vue: '.',
+		python: '.'
+	}
+}
 function shortcutRule(symbol: string, ctrl = false){
 	return (textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) => {
+		if(symbol in symbol_map && textEditor.document.languageId in symbol_map[symbol]){
+			symbol = symbol_map[symbol][textEditor.document.languageId]
+		}
 		let line = textEditor.document.lineAt(textEditor.selection.end.line)
 		vscode.commands.executeCommand('cursorLineEnd')
 		let text = line.text
