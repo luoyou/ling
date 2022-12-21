@@ -1,6 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import symbolComplete from './core/SymbolComplete'
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -28,22 +29,10 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.endSquareBraces', shortcutRule('[', false)))
 	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.endParentheses', shortcutRule('(', false)))
 	
-	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.completeParentHeses', 
-		(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) => {
-			let line = textEditor.document.lineAt(textEditor.selection.end.line)
-			let leftNum = line.text.split('(').length - 1;
-			if(leftNum > 0){
-				let rightNum = line.text.split(')').length - 1;
-				if(rightNum < leftNum){
-					vscode.commands.executeCommand('cursorLineEnd')
-					if(line.text.endsWith(';')){
-						vscode.commands.executeCommand('cursorLeft')
-					}
-					vscode.commands.executeCommand('type', {text:')'})
-				}
-			}
-		})
-	)
+	// 智能补全右圆括号
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.completeBraces', symbolComplete('}')))
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.completeSquareBraces', symbolComplete(']')))
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.completeParentHeses', symbolComplete(')')))
 
 	// context.subscriptions.push(vscode.languages.registerCompletionItemProvider('php', {
 	// 	provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken, context: vscode.CompletionContext): ProviderResult<T[] | CompletionList<T>> {

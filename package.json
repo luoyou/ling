@@ -34,6 +34,8 @@
     "onCommand:ling.endBraces",
     "onCommand:ling.endSquareBraces",
     "onCommand:ling.endParentheses",
+    "onCommand:ling.completeBraces",
+    "onCommand:ling.completeSquareBraces",
     "onCommand:ling.completeParentHeses",
     "onLanguage:php"
   ],
@@ -78,19 +80,27 @@
       },
       {
         "command": "ling.endBraces",
-        "title": "行尾{}"
+        "title": "行尾输入{}"
       },
       {
         "command": "ling.endSquareBraces",
-        "title": "行尾[]"
+        "title": "行尾输入[]"
       },
       {
         "command": "ling.endParentheses",
-        "title": "行尾()"
+        "title": "行尾输入()"
       },
       {
+        "command": "ling.completeBraces",
+        "title": "行尾补全}"
+      },      
+      {
+        "command": "ling.completeSquareBraces",
+        "title": "行尾补全]"
+      },      
+      {
         "command": "ling.completeParentHeses",
-        "title": "行尾补全()"
+        "title": "行尾补全)"
       },
       {
         "command": "ling.gitFlow",
@@ -168,6 +178,18 @@
         "command": "ling.endParentheses",
         "key": "alt+shift+9",
         "mac": "alt+shift+9",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "ling.completeBraces",
+        "key": "alt+shift+]",
+        "mac": "alt+shift+]",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "ling.completeSquareBraces",
+        "key": "alt+]",
+        "mac": "alt+]",
         "when": "editorTextFocus"
       },
       {
