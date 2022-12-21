@@ -10,7 +10,7 @@
   ],
   "publisher": "luo-rori",
   "icon": "assets/images/icon.jpg",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "engines": {
     "vscode": "^1.0.0"
   },
@@ -93,11 +93,11 @@
       {
         "command": "ling.completeBraces",
         "title": "行尾补全}"
-      },      
+      },
       {
         "command": "ling.completeSquareBraces",
         "title": "行尾补全]"
-      },      
+      },
       {
         "command": "ling.completeParentHeses",
         "title": "行尾补全)"
