@@ -73,20 +73,43 @@ export function activate(context: vscode.ExtensionContext) {
 // This method is called when your extension is deactivated
 export function deactivate() {}
 
-const symbol_map:any = {
+/** 在行尾插入这些符号时，遇到相应的符号会自动前移 */
+const 前移符号:any = {
+	'(': {
+		'*': [' ', ';', '{', '}']
+	},
+	')': {
+		'*': [' ', ';', '{' , '}']
+	},
+	'[': {
+		'*': [' ', ';']
+	},
+	']': {
+		'*': [' ', ';']
+	},
+	'{': {
+		'*': [' ', ';']
+	},
+	'}': {
+		'*': [' ', ';']
+	},
+	'?': {
+		'*': [' ', ';', ',']
+	},
+	':': {
+		'*': [' ', ';', ',']
+	},
 	'->': {
-		php: '->',
-		typescript:  '.',
-		javascript:  '.',
-		vue: '.',
-		python: '.'
+		'*': [' ', ';', ',', '{', '}']
+	},
+	'=>': {
+		'*': [' ', ';', ',', '{', '}']
 	}
 }
+
 function shortcutRule(symbol: string, ctrl = false){
 	return (textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) => {
-		if(symbol in symbol_map && textEditor.document.languageId in symbol_map[symbol]){
-			symbol = symbol_map[symbol][textEditor.document.languageId]
-		}
+		symbol = 根据语言获得对应符号(symbol, textEditor.document.languageId)
 		let line = textEditor.document.lineAt(textEditor.selection.end.line)
 		vscode.commands.executeCommand('cursorLineEnd')
 		let text = line.text
@@ -96,12 +119,33 @@ function shortcutRule(symbol: string, ctrl = false){
 				text = text.slice(0, -1)
 			}
 		}
-		if(!text.endsWith(symbol)){
+		if(!text.endsWith(symbol)){ // 当行尾已经是此符号时，仅移至行尾，不进行字符输入
 			vscode.commands.executeCommand('type', {text: symbol})
 		}
 		if(ctrl){
 			vscode.commands.executeCommand('cursorLeft', symbol.length);
 		}
+	}
+}
+
+const symbol_map:any = {
+	'->': {
+		php: '->',
+		'*':  '.'
+	}
+}
+
+/**
+ * 不同语言中的表示相同功能的符号并不一致，此处会根据映射表，自动根据语言进行符号转换
+ * @param symbol 
+ * @param languageId 
+ * @returns 
+ */
+function 根据语言获得对应符号(symbol: string, languageId: string){
+	if(symbol in symbol_map && (languageId in symbol_map[symbol] || '*' in symbol_map[symbol])){
+		return symbol_map[symbol][languageId]??symbol_map[symbol]['*']
+	}else{
+		return symbol
 	}
 }
 
