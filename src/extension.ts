@@ -42,38 +42,11 @@ export function activate(context: vscode.ExtensionContext) {
 	// 	},
 	// }, '<?'));
 
-	context.subscriptions.push(vscode.commands.registerCommand('ling.gitFlow', ()=>{
-		// vscode.commands.executeCommand('git.stageAll')
-		vscode.window.showQuickPick([
-			{
-				label: '线上调试'
-			}, 
-			{
-				label: '修复问题'
-			},
-			{
-				label: '自定义文案',
-			}
-		], {
-			ignoreFocusOut: true,
-			placeHolder: '请输入提交信息，或者选择下方自动生成的提交信息',
-		}).then((msg) => {
-			if(msg?.label === '自定义文案'){
-        vscode.window.showInputBox({
-          placeHolder: '请输入提交信息',
-        }).then(msg => {
-          msg = msg?msg:'未输入提交信息';
-          vscode.commands.executeCommand('git.commit', { amend: false, message: msg}).then(()=>{
-            vscode.commands.executeCommand('git.push');
-          });
-        });
-			}else{
-				vscode.commands.executeCommand('git.commit', {message: msg?.label}).then(()=>{
-          vscode.commands.executeCommand('git.push');
-        });
-			}
-		});
-	}));
+	context.subscriptions.push(vscode.commands.registerCommand("ling.gitFlow", () => {
+    vscode.commands.executeCommand("git.commitAll").then(() => {
+      vscode.commands.executeCommand("git.push");
+    });
+  }));
 }
 
 // This method is called when your extension is deactivated
