@@ -1,6 +1,5 @@
 import * as vscode from "vscode";
 import { GitExtension } from "../types/git";
-import { getProjectPath } from "../tool/function";
 
 export default async (textEditor: vscode.TextEditor) => {
   const git =
@@ -10,57 +9,46 @@ export default async (textEditor: vscode.TextEditor) => {
     return false;
   }
 
+  const repo = git
+    .getAPI(1)
+    .repositories.filter((repo) =>
+      textEditor.document.uri.path.startsWith(repo.rootUri.path)
+    )
+    .sort((a, b) => b.rootUri.path.length - a.rootUri.path.length)[0];
+
+  const commits: vscode.QuickPickItem[] =
+    (await repo?.log({ maxEntries: 16 }))?.map((commit) => {
+      return { label: commit.message, description: "最近提交信息" };
+    }) ?? [];
+
   const quickPick = vscode.window.createQuickPick();
-  quickPick.placeholder = "Type to filter options";
-  quickPick.items = await getItems();
-  quickPick.matchOnDescription = true;
-  quickPick.matchOnDetail = true;
-  // quickPick.onDidChangeValue(async (value) => {
-  //   quickPick.items = await getItems(value);
-  // });
+  quickPick.placeholder = "请输入提交信息";
+  quickPick.title = "提交信息";
+  quickPick.items = await getItems(commits);
+  quickPick.onDidChangeValue(async (value) => {
+    quickPick.items = await getItems(commits, value);
+  });
   quickPick.onDidChangeSelection(([item]) => {
-    if (item) {
-      vscode.window.showInformationMessage(`You selected ${item.label}`);
-    } else {
-      const userInput = quickPick.value;
-      vscode.window.showInformationMessage(`You entered ${userInput}`);
-    }
+    repo?.commit(item.label, { all: true }).then(() => vscode.commands.executeCommand('git.push'));
     quickPick.hide();
   });
   quickPick.onDidHide(() => quickPick.dispose());
   quickPick.show();
-
-  // const repo = git.getAPI(1).repositories.find((repo) => {
-  //   return repo.rootUri.fsPath === getProjectPath(textEditor.document);
-  // });
-
-  // const commitMsg = await repo?.log({maxEntries: 16});
-  // console.log('commitMsg: ', commitMsg?commitMsg[0].message:'');
-
-  // if(repo){
-  //   repo.inputBox.value = '测试提交';
-  // }
-
-  // repo?.commit("测试提交", { all: true }).then(() => repo?.push());
 };
 
 async function getItems(
+  commits: vscode.QuickPickItem[] = [],
   filterText: string = ""
 ): Promise<vscode.QuickPickItem[]> {
-  const allItems = [
-    { label: "Option 1", description: "This is the first option" },
-    { label: "Option 2", description: "This is the second option" },
-    { label: "Option 3", description: "This is the third option" },
-    { label: "Option 4", description: "This is the fourth option" },
-    { label: "Option 5", description: "This is the fifth option" },
-  ];
-  const filteredItems = allItems.filter((item) =>
-    `${item.label} ${item.description}`
-      .toLowerCase()
-      .includes(filterText.toLowerCase())
+  const filteredItems = commits.filter(
+    (item, index) =>
+      commits.indexOf(item) === index && // 去重
+      item.label.toLowerCase().includes(filterText.toLowerCase()) && // 过滤
+      item.label.toLowerCase() !== filterText.toLowerCase() &&
+      !item.label.toLowerCase().startsWith("merge ")
   );
-  // if(filteredItems.length === 0){
-  //   filteredItems.push({label: filterText, description: "自动生成"});
-  // }
+  filterText !== "" &&
+    filteredItems.unshift({ label: filterText, description: "当前输入" });
+  filteredItems.push({ label: "线上调试", description: "常用标签" });
   return filteredItems;
 }
