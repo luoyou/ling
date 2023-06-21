@@ -3,6 +3,8 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import symbolComplete from './core/SymbolComplete';
+import gitFlow from './core/Git';
+import { getProjectPath } from './tool/function';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -12,10 +14,10 @@ export function activate(context: vscode.ExtensionContext) {
 	let stringClass = vscode.languages.registerDefinitionProvider(['php'], {provideDefinition});
 	context.subscriptions.push(stringClass);
 
-	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.endSemicolon',    shortcutRule(';', false)));
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.endSemicolon', shortcutRule(';', false)));
 	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.preEndSemicolon', shortcutRule(';', true)));
 
-	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.endComma',    shortcutRule(',', false)));
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.endComma', shortcutRule(',', false)));
 	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.preEndComma', shortcutRule(',', true)));
 
 	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.endColon', shortcutRule(':', false)));
@@ -35,18 +37,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.completeSquareBraces', symbolComplete(']')));
 	context.subscriptions.push(vscode.commands.registerTextEditorCommand('ling.completeParentHeses', symbolComplete(')')));
 
-	// context.subscriptions.push(vscode.languages.registerCompletionItemProvider('php', {
-	// 	provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken, context: vscode.CompletionContext): ProviderResult<T[] | CompletionList<T>> {
-	// 		let file_name = document.fileName;
-
-	// 	},
-	// }, '<?'));
-
-	context.subscriptions.push(vscode.commands.registerCommand("ling.gitFlow", () => {
-    vscode.commands.executeCommand("git.commitAll").then(() => {
-      vscode.commands.executeCommand("git.push");
-    });
-  }));
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand("ling.gitFlow", gitFlow));
 }
 
 // This method is called when your extension is deactivated
@@ -164,25 +155,4 @@ function provideDefinition(
 			return new vscode.Location(vscode.Uri.file(destPath), new vscode.Position(0, 0));
 		}
 	}
-}
-
-/**
- * 获取当前所在工程根目录，有3种使用方法：<br>
- * getProjectPath(uri) uri 表示工程内某个文件的路径<br>
- * getProjectPath(document) document 表示当前被打开的文件document对象<br>
- * getProjectPath() 会自动从 activeTextEditor 拿document对象，如果没有拿到则报错
- * @param {*} document 
- */
-function getProjectPath(document: vscode.TextDocument):string {
-	let projectPath = '';
-	if(vscode.workspace.workspaceFolders === undefined) {
-		return projectPath;
-	}
-	vscode.workspace.workspaceFolders.forEach(folder => {
-		if(document.uri.fsPath.indexOf(folder.uri.fsPath) === 0) {
-			projectPath = folder.uri.fsPath;
-		}
-	});
-
-	return projectPath;
 }
