@@ -58,7 +58,7 @@ const 前移符号: { [key: string]: { [key: string]: string[] } } = {
     "*": [" ", ";", "{", "}"],
   },
   ")": {
-    "*": [" ", ";", "{", "}"],
+    "*": [" ", ";", "{"],
   },
   "[": {
     "*": [" ", ";"],
@@ -76,10 +76,10 @@ const 前移符号: { [key: string]: { [key: string]: string[] } } = {
     "*": [" ", ";", ","],
   },
   ":": {
-    "*": [" ", ";", ","],
+    "*": [" ", ";", ",", "{"],
   },
   "->": {
-    "*": [" ", ";", ",", "{", "}"],
+    "*": [" ", ";", ",", "{", "}", "'", '"'],
   },
   "=>": {
     "*": [" ", ";", ",", "{", "}"],
@@ -88,15 +88,18 @@ const 前移符号: { [key: string]: { [key: string]: string[] } } = {
 
 function shortcutRule(symbol: string, ctrl = false){
 	return (textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) => {
-		symbol = 根据语言获得对应符号(symbol, textEditor.document.languageId);
+		symbol = 根据语言获得映射符号(symbol, textEditor.document.languageId);
 		let line = textEditor.document.lineAt(textEditor.selection.end.line);
 		vscode.commands.executeCommand('cursorLineEnd');
 		let text = line.text;
-		if(symbol !== ';'){
-			while(text.endsWith(';')){
-				vscode.commands.executeCommand('cursorLeft');
-				text = text.slice(0, -1);
-			}
+		if(symbol in 前移符号){
+			let 符号列表 = 根据语言获取前移符号列表(symbol, textEditor.document.languageId);
+			符号列表.map(item => {
+				while(text.endsWith(item)){
+					vscode.commands.executeCommand('cursorLeft');
+					text = text.slice(0, -item.length);
+				}
+			});
 		}
 		if(!text.endsWith(symbol)){ // 当行尾已经是此符号时，仅移至行尾，不进行字符输入
 			vscode.commands.executeCommand('type', {text: symbol});
@@ -120,11 +123,19 @@ const symbol_map: { [key: string]: { [key: string]: string } } = {
  * @param languageId 
  * @returns 
  */
-function 根据语言获得对应符号(symbol: string, languageId: string){
+function 根据语言获得映射符号(symbol: string, languageId: string){
 	if(symbol in symbol_map && (languageId in symbol_map[symbol] || '*' in symbol_map[symbol])){
 		return symbol_map[symbol][languageId]??symbol_map[symbol]['*'];
 	}else{
 		return symbol;
+	}
+}
+
+function 根据语言获取前移符号列表(符号: string, 语言: string){
+	if(符号 in 前移符号 && (语言 in 前移符号[符号] || '*' in 前移符号[符号])){
+		return 前移符号[符号][语言]??前移符号[符号]['*'];
+	}else{
+		return [];
 	}
 }
 
