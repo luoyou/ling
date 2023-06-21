@@ -10,7 +10,7 @@
   ],
   "publisher": "luo-rori",
   "icon": "assets/images/icon.jpg",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "engines": {
     "vscode": "^1.0.0"
   },
