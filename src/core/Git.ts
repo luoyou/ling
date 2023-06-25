@@ -43,13 +43,14 @@ async function getItems(
   filterText: string = ""
 ): Promise<vscode.QuickPickItem[]> {
   let history: string[] = [];
-  const filteredItems = commits.filter((item, index) => {
-    !history.includes(item.label) && // 去重
+  const filteredItems = commits.filter(
+    (item) =>
+      !history.includes(item.label) && // 去重
       item.label.toLowerCase().includes(filterText.toLowerCase()) && // 过滤
       item.label.toLowerCase() !== filterText.toLowerCase() &&
-      !item.label.toLowerCase().startsWith("merge ");
-    history.push(item.label);
-  });
+      !item.label.toLowerCase().startsWith("merge ") &&
+      history.push(item.label) // 将已经添加过历史记录的提交信息添加进该数组，避免重复显示
+  );
   filterText !== "" &&
     filteredItems.unshift({ label: filterText, description: "当前输入" });
   filteredItems.push({ label: "线上调试", description: "常用标签" });
