@@ -29,7 +29,9 @@ export default async (textEditor: vscode.TextEditor) => {
     quickPick.items = await getItems(commits, value);
   });
   quickPick.onDidChangeSelection(([item]) => {
-    repo?.commit(item.label, { all: true }).then(() => vscode.commands.executeCommand('git.push'));
+    repo
+      ?.commit(item.label, { all: true })
+      .then(() => vscode.commands.executeCommand("git.push"));
     quickPick.hide();
   });
   quickPick.onDidHide(() => quickPick.dispose());
@@ -40,13 +42,14 @@ async function getItems(
   commits: vscode.QuickPickItem[] = [],
   filterText: string = ""
 ): Promise<vscode.QuickPickItem[]> {
-  const filteredItems = commits.filter(
-    (item, index) =>
-      commits.indexOf(item) === index && // 去重
+  let history: string[] = [];
+  const filteredItems = commits.filter((item, index) => {
+    !history.includes(item.label) && // 去重
       item.label.toLowerCase().includes(filterText.toLowerCase()) && // 过滤
       item.label.toLowerCase() !== filterText.toLowerCase() &&
-      !item.label.toLowerCase().startsWith("merge ")
-  );
+      !item.label.toLowerCase().startsWith("merge ");
+    history.push(item.label);
+  });
   filterText !== "" &&
     filteredItems.unshift({ label: filterText, description: "当前输入" });
   filteredItems.push({ label: "线上调试", description: "常用标签" });
