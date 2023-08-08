@@ -1,6 +1,5 @@
 import * as vscode from "vscode";
 import { GitExtension } from "../types/git";
-import { getProjectPath } from "../tool/function";
 
 export default async (textEditor: vscode.TextEditor) => {
   const git =
@@ -10,22 +9,50 @@ export default async (textEditor: vscode.TextEditor) => {
     return false;
   }
 
-  vscode.window
-    .showQuickPick(["选项1", "选项2", "3"], { title: "提交信息" })
-    .then((val) => {
-      console.log(val);
-    });
+  const repo = git
+    .getAPI(1)
+    .repositories.filter((repo) =>
+      textEditor.document.uri.path.startsWith(repo.rootUri.path)
+    )
+    .sort((a, b) => b.rootUri.path.length - a.rootUri.path.length)[0];
 
-  // const repo = git.getAPI(1).repositories.find((repo) => {
-  //   return repo.rootUri.fsPath === getProjectPath(textEditor.document);
-  // });
+  const commits: vscode.QuickPickItem[] =
+    (await repo?.log({ maxEntries: 16 }))?.map((commit) => {
+      return { label: commit.message, description: "最近提交信息" };
+    }) ?? [];
 
-  // const commitMsg = await repo?.log({maxEntries: 16});
-  // console.log('commitMsg: ', commitMsg?commitMsg[0].message:'');
-
-  // if(repo){
-  //   repo.inputBox.value = '测试提交';
-  // }
-
-  // repo?.commit("测试提交", { all: true }).then(() => repo?.push());
+  const quickPick = vscode.window.createQuickPick();
+  quickPick.placeholder = "请输入提交信息";
+  quickPick.title = "提交信息";
+  quickPick.items = await getItems(commits);
+  quickPick.onDidChangeValue(async (value) => {
+    quickPick.items = await getItems(commits, value);
+  });
+  quickPick.onDidChangeSelection(([item]) => {
+    repo
+      ?.commit(item.label, { all: true })
+      .then(() => vscode.commands.executeCommand("git.push"));
+    quickPick.hide();
+  });
+  quickPick.onDidHide(() => quickPick.dispose());
+  quickPick.show();
 };
+
+async function getItems(
+  commits: vscode.QuickPickItem[] = [],
+  filterText: string = ""
+): Promise<vscode.QuickPickItem[]> {
+  let history: string[] = [];
+  const filteredItems = commits.filter(
+    (item) =>
+      !history.includes(item.label) && // 去重
+      item.label.toLowerCase().includes(filterText.toLowerCase()) && // 过滤
+      item.label.toLowerCase() !== filterText.toLowerCase() &&
+      !item.label.toLowerCase().startsWith("merge ") &&
+      history.push(item.label) // 将已经添加过历史记录的提交信息添加进该数组，避免重复显示
+  );
+  filterText !== "" &&
+    filteredItems.unshift({ label: filterText, description: "当前输入" });
+  filteredItems.push({ label: "线上调试", description: "常用标签" });
+  return filteredItems;
+}
