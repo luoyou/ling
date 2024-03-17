@@ -5,6 +5,7 @@ import * as vscode from 'vscode';
 import symbolComplete from './core/SymbolComplete';
 import gitFlow from './core/Git';
 import { getProjectPath } from './tool/function';
+import * as fs from 'fs';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -173,10 +174,19 @@ function provideDefinition(
 	 * @param {*} context 
 	 */
 function provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken, context: vscode.CompletionContext) {
+	let namespace = document.fileName.replace(getProjectPath(document), '');
+	const fileUri = document.uri;
+	const composer = vscode.workspace.getWorkspaceFolder(fileUri)?.uri.fsPath + '/composer.json';
+	if (fs.existsSync(composer)) {
+		const json = require(composer).autoload['psr-4'] ?? {};
+		for (let key in json) {
+			namespace = namespace.replace(json[key], key);
+		}
+	}
 	let code: string[] = [
 		'php',
 		'declare(strict_types=1);',
-		'namespace ' + document.fileName.replace(getProjectPath(document), '').split('/').slice(1, -1).join('\\') + ';\n',
+		'namespace ' + namespace.split('/').slice(1, -1).join('\\') + ';\n',
 		'final class ' + document.fileName.split('/').pop()?.split('/').shift()?.split('.').shift() + '{\n\t\n}'
 	];
 
